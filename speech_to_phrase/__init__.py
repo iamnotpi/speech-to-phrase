@@ -4,7 +4,7 @@ import importlib
 
 from .const import Language, Settings, WordCasing
 from .hass_api import Things
-from .models import MODELS, Model
+from .models import MODELS, Model, ModelType
 from .train import train
 from .transcribe import transcribe
 
@@ -15,6 +15,7 @@ __all__ = [
     "transcribe",
     "MODELS",
     "Model",
+    "ModelType",
     "WordCasing",
     "Things",
     "Settings",
