@@ -1,0 +1,173 @@
+---
+language: "vi"
+
+lists:
+  color:
+    - "trắng"
+    - "đen"
+    - "đỏ"
+    - "cam"
+    - "vàng"
+    - "xanh lá"
+    - "xanh dương"
+    - "tím"
+    - "nâu"
+    - "hồng"
+    - "xanh ngọc"
+
+wildcards:
+  - "todo_item"
+
+data:
+  # cancel
+  - "(huỷ|đừng bận tâm|không có gì)"
+
+  # date and time
+  - "mấy giờ rồi"
+  - "bây giờ là mấy giờ [vậy] [rồi]"
+  - "hôm nay ngày bao nhiêu"
+  - "hôm nay là ngày mấy"
+  - "hôm nay là ngày gì"
+
+  # weather
+  - "thời tiết [hiện tại] thế nào"
+  - sentences:
+      - "thời tiết ở {name} như thế nào"
+      - "thời tiết của {name} ra sao"
+    domains:
+      - "weather"
+
+  # lights (area)
+  - "bật [tất cả] đèn [ở đây]"
+  - "tắt [tất cả] đèn [ở đây]"
+  - "bật [tất cả] đèn ở {area}"
+  - "bật [tất cả] đèn trong {area}"
+  - "tắt [tất cả] đèn ở {area}"
+  - "tắt [tất cả] đèn trong {area}"
+  - "đặt độ sáng [ở] đây thành {brightness} phần trăm"
+  - "đặt độ sáng của {area} thành {brightness} phần trăm"
+  - "đặt đèn ở {area} sáng {brightness} phần trăm"
+  - "đặt đèn {area} sáng {brightness} phần trăm"
+  - "đặt đèn trong {area} thành màu {color}"
+  - "đổi đèn [ở đây] sang màu {color}"
+  - "đổi màu đèn [ở đây] sang {color}"
+  - "đổi đèn {area} sang màu {color}"
+  - "đổi màu đèn {area} sang {color}"
+  - "đổi màu đèn {area} thành màu {color}"
+
+  # lights (name)
+  - sentences:
+      - "đặt độ sáng của {name} thành {brightness} phần trăm"
+      - "đặt {name} sáng {brightness} phần trăm"
+    domains:
+      - "light"
+    light_supports_brightness: true
+
+  - sentences:
+      - "đổi màu của {name} sang {color}"
+      - "đổi {name} sang màu {color}"
+    domains:
+      - "light"
+    light_supports_color: true
+
+  # doors and windows
+  - "(mở|đóng) (rèm|cửa sổ) ở {area}"
+  - "(mở|đóng) (rèm|cửa sổ) trong {area}"
+  - "(mở|đóng) (rèm|cửa sổ) {area}"
+  - sentences:
+      - "(mở|đóng) {name}"
+      - "(mở|đóng) {name} ở {area}"
+      - "{name} có đang (mở|đóng) không"
+    domains:
+      - "cover"
+
+  # locks
+  - sentences:
+      - "(khóa|mở khóa) {name}"
+      - "{name} có đang (khóa|mở khóa) không"
+    domains:
+      - "lock"
+
+  # generic on/off
+  - sentences:
+      - "bật {name}"
+      - "tắt {name}"
+      - "bật {name} ở {area}"
+      - "tắt {name} ở {area}"
+    domains:
+      - "light"
+      - "switch"
+      - "fan"
+      - "media_player"
+      - "input_boolean"
+
+  # scripts and scenes
+  - sentences:
+      - "chạy {name}"
+    domains:
+      - "script"
+
+  - sentences:
+      - "kích hoạt {name}"
+    domains:
+      - "scene"
+
+  # timers
+  - "(đặt|bắt đầu|tạo) hẹn giờ {seconds} giây"
+  - "(đặt|bắt đầu|tạo) hẹn giờ 1 phút"
+  - "(đặt|bắt đầu|tạo) hẹn giờ {minutes} phút"
+  - "(đặt|bắt đầu|tạo) hẹn giờ 1 phút {seconds} giây"
+  - "(đặt|bắt đầu|tạo) hẹn giờ {minutes} phút {seconds} giây"
+  - "(đặt|bắt đầu|tạo) hẹn giờ {minutes} phút rưỡi"
+  - "(đặt|bắt đầu|tạo) hẹn giờ 1 giờ"
+  - "(đặt|bắt đầu|tạo) hẹn giờ {hours} giờ"
+  - "(đặt|bắt đầu|tạo) hẹn giờ {hours} giờ rưỡi"
+  - "(đặt|bắt đầu|tạo) hẹn giờ 1 giờ 1 phút"
+  - "(đặt|bắt đầu|tạo) hẹn giờ 1 giờ {minutes} phút"
+  - "(đặt|bắt đầu|tạo) hẹn giờ {hours} giờ {minutes} phút"
+
+  - "(hủy|dừng) hẹn giờ"
+  - "(hủy|dừng) mọi hẹn giờ"
+  - "(hủy|dừng) tất cả hẹn giờ"
+  - "(tạm dừng|tiếp tục) hẹn giờ"
+  - "(trạng thái|tình trạng) hẹn giờ"
+  - "còn bao nhiêu thời gian của hẹn giờ"
+
+  # media
+  - "(tạm dừng|tiếp tục)"
+  - "bài tiếp theo"
+  - "bỏ qua bài này"
+  - sentences:
+      - "(tạm dừng|tiếp tục) {name}"
+      - "bài tiếp theo trên {name}"
+      - "bỏ qua bài trên {name}"
+    domains:
+      - "media_player"
+
+  # temperature
+  - "nhiệt độ [bây giờ] là bao nhiêu"
+  - "nhiệt độ bao nhiêu"
+  - "nhiệt độ ở {area} là bao nhiêu"
+  - "nhiệt độ của {area} là bao nhiêu"
+  - "nhiệt độ của {area} thế nào"
+  - sentences:
+      - "nhiệt độ của {name} là bao nhiêu"
+      - "nhiệt độ của {name} là gì"
+      - "{name} có nhiệt độ bao nhiêu"
+    domains:
+      - "climate"
+
+  # sensors
+  - sentences:
+      - "{name} là bao nhiêu"
+      - "giá trị {name} là bao nhiêu"
+      - "giá trị của {name} là bao nhiêu"
+    domains:
+      - "sensor"
+
+  # todo
+  - sentences:
+      - "thêm {todo_item} vào {name}"
+    domains:
+      - "todo"
+ 

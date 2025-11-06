@@ -1,0 +1,50 @@
+---
+language: "vi"
+
+fixtures:
+  areas:
+    - name: "Phòng khách"
+    - name: "Nhà bếp"
+    - name: "Văn phòng"
+
+  entities:
+    - name: "Đèn bàn"
+      domain: "light"
+      light_supports_brightness: true
+      light_supports_color: true
+
+    - name: "Đèn đứng"
+      domain: "light"
+      light_supports_brightness: false
+
+    - name: "Hà Nội"
+      domain: "weather"
+
+    - name: "Máy điều hòa"
+      domain: "climate"
+
+    - name: "Cửa gara"
+      domain: "cover"
+
+    - name: "Cửa trượt"
+      domain: "cover"
+
+    - name: "Cửa chính"
+      domain: "lock"
+
+    - name: "TV"
+      domain: "media_player"
+      media_player_supports_pause: true
+
+    - name: "Bữa tối"
+      domain: "script"
+
+    - name: "Ánh sáng thư giãn"
+      domain: "scene"
+
+    - name: "Độ ẩm ngoài trời"
+      domain: "sensor"
+
+    - name: "Danh sách mua sắm"
+      domain: "todo"
+

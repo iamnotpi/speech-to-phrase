@@ -1,0 +1,127 @@
+---
+language: "vi"
+
+sentences:
+  # date and time
+  - "mấy giờ rồi"
+  - "bây giờ là mấy giờ"
+  - "hôm nay ngày bao nhiêu"
+  - "hôm nay là ngày gì"
+  - "hôm nay là ngày mấy"
+
+  # weather
+  - "thời tiết thế nào"
+  - "thời tiết ở hà nội như thế nào"
+  - "thời tiết của hà nội ra sao"
+
+  # lights (area)
+  - "bật đèn"
+  - "tắt đèn ở đây"
+  - "bật đèn ở phòng khách"
+  - "tắt tất cả đèn trong phòng khách"
+  - "bật đèn trong phòng khách"
+  - "tắt tất cả đèn ở phòng khách"
+  - "đặt độ sáng ở đây thành 50 phần trăm"
+  - "đặt độ sáng của phòng khách thành 25 phần trăm"
+  - "đặt đèn phòng khách sáng 100 phần trăm"
+  - "đặt đèn ở phòng khách sáng 70 phần trăm"
+  - "đổi đèn sang màu đỏ"
+  - "đổi màu đèn sang xanh lá"
+  - "đổi màu đèn phòng khách sang xanh dương"
+  - "đổi đèn phòng khách sang màu trắng"
+  - "đặt đèn trong phòng khách thành màu vàng"
+  - "đổi màu đèn phòng khách thành màu đỏ"
+
+  # lights (name)
+  - "đặt độ sáng của đèn bàn thành 10 phần trăm"
+  - "đặt đèn bàn sáng 75 phần trăm"
+  - "đổi màu của đèn bàn sang vàng"
+  - "đổi đèn bàn sang màu cam"
+
+  # doors and windows
+  - "mở rèm ở văn phòng"
+  - "mở rèm trong văn phòng"
+  - "đóng cửa sổ ở văn phòng"
+  - "mở rèm văn phòng"
+  - "đóng cửa sổ nhà bếp"
+  - "mở cửa trượt"
+  - "đóng cửa trượt"
+  - "mở cửa trượt ở văn phòng"
+  - "cửa trượt có đang mở không"
+  - "cửa trượt có đang đóng không"
+
+  # locks
+  - "khóa cửa chính"
+  - "mở khóa cửa chính"
+  - "cửa chính có đang khóa không"
+  - "cửa chính có đang mở khóa không"
+
+  # generic on/off
+  - "bật tv"
+  - "tắt tv"
+  - "bật đèn bàn"
+  - "tắt đèn bàn"
+  - "bật tv ở phòng khách"
+  - "tắt tv ở văn phòng"
+  - "bật đèn đứng ở văn phòng"
+  - "tắt đèn đứng ở văn phòng"
+
+  # scripts and scenes
+  - "chạy bữa tối"
+  - "kích hoạt ánh sáng thư giãn"
+
+  # timers
+  - "đặt hẹn giờ 30 giây"
+  - "bắt đầu hẹn giờ 1 phút"
+  - "tạo hẹn giờ 5 phút"
+  - "đặt hẹn giờ 1 phút 45 giây"
+  - "bắt đầu hẹn giờ 10 phút 20 giây"
+  - "tạo hẹn giờ 5 phút rưỡi"
+  - "đặt hẹn giờ 1 giờ"
+  - "bắt đầu hẹn giờ 3 giờ"
+  - "tạo hẹn giờ 4 giờ rưỡi"
+  - "đặt hẹn giờ 1 giờ 1 phút"
+  - "bắt đầu hẹn giờ 1 giờ 8 phút"
+  - "tạo hẹn giờ 6 giờ 20 phút"
+
+  - "hủy hẹn giờ"
+  - "dừng hẹn giờ"
+  - "hủy tất cả hẹn giờ"
+  - "hủy mọi hẹn giờ"
+  - "dừng tất cả hẹn giờ"
+  - "tạm dừng hẹn giờ"
+  - "tiếp tục hẹn giờ"
+  - "trạng thái hẹn giờ"
+  - "tình trạng hẹn giờ"
+  - "còn bao nhiêu thời gian của hẹn giờ"
+
+  # media
+  - "tạm dừng"
+  - "tiếp tục"
+  - "bài tiếp theo"
+  - "bỏ qua bài này"
+  - "tạm dừng tv"
+  - "tiếp tục tv"
+  - "bài tiếp theo trên tv"
+  - "bỏ qua bài trên tv"
+
+  # temperature
+  - "nhiệt độ là bao nhiêu"
+  - "nhiệt độ bao nhiêu"
+  - "nhiệt độ ở phòng khách là bao nhiêu"
+  - "nhiệt độ của văn phòng là bao nhiêu"
+  - "nhiệt độ của máy điều hòa là bao nhiêu"
+  - "nhiệt độ của máy điều hòa là gì"
+  - "nhiệt độ của phòng khách thế nào"
+  - "máy điều hòa có nhiệt độ bao nhiêu"
+
+  # sensors
+  - "độ ẩm ngoài trời là bao nhiêu"
+  - "giá trị độ ẩm ngoài trời là bao nhiêu"
+  - "giá trị của độ ẩm ngoài trời là bao nhiêu"
+
+  # todo
+  - "thêm táo vào danh sách mua sắm"
+
+  # cancel
+  - "đừng bận tâm"
