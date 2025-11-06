@@ -1,5 +1,6 @@
 """Tests."""
 
+import os
 from pathlib import Path
 
 from speech_to_phrase import Language, Settings
@@ -19,3 +20,7 @@ SETTINGS = Settings(
 )
 
 TEST_LANGUAGES = [lang.value for lang in Language]
+
+_override_langs = os.environ.get("TEST_LANGUAGES")
+if _override_langs:
+    TEST_LANGUAGES = [lang.strip() for lang in _override_langs.split(",") if lang.strip()]

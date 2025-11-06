@@ -13,7 +13,7 @@ from hassil import Intents, recognize_best
 from home_assistant_intents import get_intents
 from pysilero_vad import SileroVoiceActivityDetector
 
-from speech_to_phrase import MODELS, Model, Things, train, transcribe
+from speech_to_phrase import MODELS, Model, ModelType, Things, train, transcribe
 from speech_to_phrase.audio import wav_audio_stream
 from speech_to_phrase.util import get_language_family, yaml
 
@@ -64,6 +64,13 @@ async def lang_resources_fixture(request) -> Resources:
 
     # Train STP model
     model = MODELS[language]
+    wav_dir = TESTS_DIR / "wav" / language
+    has_wav_fixtures = any(wav_dir.glob("*.wav")) or any(
+        (wav_dir / "generated").glob("*.wav")
+    )
+
+    if model.type == ModelType.VOSK and not has_wav_fixtures:
+        pytest.skip("Vosk transcription tests require language fixtures")
     model_train_dir = SETTINGS.model_train_dir(model.id)
     if model_train_dir.exists():
         shutil.rmtree(model_train_dir)

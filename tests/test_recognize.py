@@ -40,20 +40,22 @@ def lang_resources_fixture(request, shared_lists: dict[str, Any]) -> Resources:
     if not hass_intents_dict:
         hass_intents_dict = get_intents(get_language_family(language))
 
-    assert hass_intents_dict, f"No intents for language: {language}"
-
-    hass_lists = hass_intents_dict.setdefault("lists", {})
-
-    # Load language sentences
     with open(
         SETTINGS.sentences / f"{language}.yaml", "r", encoding="utf-8"
     ) as sentences_file:
         sentences_dict = yaml.load(sentences_file)
 
+    lang_data = LanguageData.from_dict(sentences_dict)
+
+    fallback_hass = hass_intents_dict is None
+    if fallback_hass:
+        hass_intents_dict = lang_data.to_intents_dict()
+
+    hass_lists = hass_intents_dict.setdefault("lists", {})
+
     for list_name, list_values in sentences_dict.get("lists", {}).items():
         hass_lists[list_name] = {"values": list_values}
 
-    lang_data = LanguageData.from_dict(sentences_dict)
     stp_intents_dict = lang_data.to_intents_dict()
     stp_lists = stp_intents_dict.setdefault("lists", {})
     stp_lists.update(shared_lists)
@@ -69,9 +71,14 @@ def lang_resources_fixture(request, shared_lists: dict[str, Any]) -> Resources:
     hass_lists.update(test_things_dict)
     stp_lists.update(test_things_dict)
 
-    hass_intents = Intents.from_dict(hass_intents_dict)
     stp_intents = Intents.from_dict(stp_intents_dict)
     lang_data.add_transformed_slot_lists(stp_intents.slot_lists)
+
+    if fallback_hass:
+        hass_intents = stp_intents
+    else:
+        hass_intents = Intents.from_dict(hass_intents_dict)
+        lang_data.add_transformed_slot_lists(hass_intents.slot_lists)
 
     with open(
         TESTS_DIR / "sentences" / f"{language}.yaml", "r", encoding="utf-8"

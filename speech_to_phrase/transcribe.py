@@ -11,6 +11,8 @@ from .const import Settings, TranscribingError
 from .models import MODELS, Model, ModelType
 from .transcribe_coqui_stt import transcribe_coqui_stt
 from .transcribe_kaldi import transcribe_kaldi
+from .transcribe_vosk import transcribe_vosk
+from .transcribe_whisper import transcribe_whisper
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -24,6 +26,12 @@ async def transcribe(
 
     if model.type == ModelType.COQUI_STT:
         return await transcribe_coqui_stt(model, settings, audio_stream)
+
+    if model.type == ModelType.VOSK:
+        return await transcribe_vosk(model, settings, audio_stream)
+
+    if model.type == ModelType.WHISPER:
+        return await transcribe_whisper(model, settings, audio_stream)
 
     raise TranscribingError(f"Unexpected model type for {model.id}: {model.type}")
 

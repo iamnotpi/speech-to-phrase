@@ -4,6 +4,7 @@ import logging
 import shutil
 import tarfile
 import tempfile
+import zipfile
 from collections.abc import Collection
 from dataclasses import dataclass
 from enum import Enum
@@ -24,6 +25,8 @@ class ModelType(str, Enum):
 
     KALDI = "kaldi"
     COQUI_STT = "coqui-stt"
+    VOSK = "vosk"
+    WHISPER = "whisper"
 
 
 @dataclass
@@ -342,6 +345,20 @@ MODELS: Dict[str, Model] = {
         sentences_language="tr",
         number_language="tr",
     ),
+    Language.VIETNAMESE.value: Model(
+        id="phowhisper-base",
+        type=ModelType.WHISPER,
+        language="vi_VN",
+        language_family="vi",
+        description="Vietnamese PhoWhisper-base model",
+        version="1.0",
+        author="VinAI Research",
+        url="https://huggingface.co/vinai/PhoWhisper-base",
+        casing=WordCasing.LOWER,
+        sentences_language="vi",
+        number_language="vi",
+        is_enabled=True,
+    ),
 }
 
 DEFAULT_MODEL = MODELS[Language.ENGLISH]
@@ -392,6 +409,15 @@ async def download_model(model: Model, settings: Settings) -> None:
 
     If the model is already downloaded, it is deleted and downloaded again.
     """
+
+    if model.type == ModelType.WHISPER:
+        _LOGGER.debug("Whisper model %s will be downloaded automatically by transformers", model.id)
+        settings.models_dir.mkdir(parents=True, exist_ok=True)
+        # Create a placeholder directory to indicate model is "configured"
+        model_dir = settings.models_dir / model.id
+        model_dir.mkdir(parents=True, exist_ok=True)
+        return
+
     model_dir = settings.models_dir / model.id
     if model_dir.exists():
         _LOGGER.debug("Deleting existing model directory: %s", model_dir)
@@ -399,7 +425,12 @@ async def download_model(model: Model, settings: Settings) -> None:
 
     settings.models_dir.mkdir(parents=True, exist_ok=True)
 
-    url = URL_FORMAT.format(model_id=model.id)
+    if model.type == ModelType.VOSK and model.url:
+        url = model.url
+        # TODO: Handle multi-part archives for larger Vosk models if needed.
+    else:
+        url = URL_FORMAT.format(model_id=model.id)
+
     _LOGGER.debug(
         "Downloading model %s at %s to %s", model.id, url, settings.models_dir
     )
@@ -409,15 +440,20 @@ async def download_model(model: Model, settings: Settings) -> None:
             async with session.get(url) as response:
                 response.raise_for_status()
 
+                suffix = ".zip" if url.endswith(".zip") else ".tar.gz"
                 with tempfile.NamedTemporaryFile(
-                    mode="wb+", suffix=".tar.gz"
+                    mode="wb+", suffix=suffix
                 ) as temp_file:
                     async for chunk in response.content.iter_chunked(2048):
                         temp_file.write(chunk)
 
                     temp_file.seek(0)
-                    with tarfile.open(temp_file.name, mode="r:gz") as tar:
-                        tar.extractall(path=settings.models_dir)
+                    if suffix == ".zip":
+                        with zipfile.ZipFile(temp_file) as archive:
+                            archive.extractall(path=settings.models_dir)
+                    else:
+                        with tarfile.open(fileobj=temp_file, mode="r:gz") as tar:
+                            tar.extractall(path=settings.models_dir)
 
         _LOGGER.debug("Downloaded model %s", model.id)
     except Exception:
