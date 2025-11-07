@@ -39,6 +39,8 @@ async def transcribe_whisper(
         parts = model.url.rstrip("/").split("/")
         if len(parts) >= 2:
             whisper_model_id = f"{parts[-2]}/{parts[-1]}"
+    elif model.id == "phowhisper-tiny":
+        whisper_model_id = "vinai/PhoWhisper-tiny"
     elif model.id == "phowhisper-base":
         whisper_model_id = "vinai/PhoWhisper-base"
     elif model.id == "phowhisper-small":
