@@ -16,3 +16,7 @@ __pycache__/
 /local/
 /tests/train/
 /dist/
+
+models/
+synthetic_VN/
+tests/wav/vi/*.wav
