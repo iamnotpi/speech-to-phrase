@@ -9,10 +9,11 @@ from pathlib import Path
 
 from .const import Settings, TranscribingError
 from .models import MODELS, Model, ModelType
+from .transcribe_chunkformer import transcribe_chunkformer
 from .transcribe_coqui_stt import transcribe_coqui_stt
 from .transcribe_kaldi import transcribe_kaldi
-from .transcribe_vosk import transcribe_vosk
 from .transcribe_whisper import transcribe_whisper
+from .transcribe_vietasr import transcribe_vietasr
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -27,11 +28,14 @@ async def transcribe(
     if model.type == ModelType.COQUI_STT:
         return await transcribe_coqui_stt(model, settings, audio_stream)
 
-    if model.type == ModelType.VOSK:
-        return await transcribe_vosk(model, settings, audio_stream)
-
     if model.type == ModelType.WHISPER:
         return await transcribe_whisper(model, settings, audio_stream)
+
+    if model.type == ModelType.VIETASR:
+        return await transcribe_vietasr(model, settings, audio_stream)
+
+    if model.type == ModelType.CHUNKFORMER:
+        return await transcribe_chunkformer(model, settings, audio_stream)
 
     raise TranscribingError(f"Unexpected model type for {model.id}: {model.type}")
 

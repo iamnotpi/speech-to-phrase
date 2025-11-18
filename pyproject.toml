@@ -35,7 +35,6 @@ dependencies = [
     "pysilero-vad>=2,<3",
     "pyring-buffer>=1,<2",
     "ruamel.yaml==0.18.14",
-    "vosk>=0.3.45,<0.4",
     "transformers>=4.30.0",
     "torch>=1.13.0",
     "numpy>=1.21.0",

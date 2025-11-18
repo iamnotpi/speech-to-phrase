@@ -25,8 +25,9 @@ class ModelType(str, Enum):
 
     KALDI = "kaldi"
     COQUI_STT = "coqui-stt"
-    VOSK = "vosk"
     WHISPER = "whisper"
+    VIETASR = "vietasr"
+    CHUNKFORMER = "chunkformer"
 
 
 @dataclass
@@ -346,20 +347,55 @@ MODELS: Dict[str, Model] = {
         number_language="tr",
     ),
     Language.VIETNAMESE.value: Model(
-        id="phowhisper-base",
-        type=ModelType.WHISPER,
+        id="chunkformer-rnnt-large-vie",
+        type=ModelType.CHUNKFORMER,
         language="vi_VN",
         language_family="vi",
-        description="Vietnamese PhoWhisper-base model",
-        version="1.0",
-        author="VinAI Research",
-        url="https://huggingface.co/vinai/PhoWhisper-base",
+        description="ChunkFormer RNNT large Vietnamese model",
+        version="1.2.2",
+        author="ChunkFormer Authors",
+        url="https://huggingface.co/khanhld/chunkformer-rnnt-large-vie",
         casing=WordCasing.LOWER,
         sentences_language="vi",
         number_language="vi",
         is_enabled=True,
     ),
 }
+
+_CHUNKFORMER_MODEL = MODELS[Language.VIETNAMESE.value]
+MODELS[_CHUNKFORMER_MODEL.id] = _CHUNKFORMER_MODEL
+
+_VIETASR_MODEL = Model(
+    id="vietasr-zipformer",
+    type=ModelType.VIETASR,
+    language="vi_VN",
+    language_family="vi",
+    description="VietASR Zipformer model (cpu_jit.pt)",
+    version="1.0",
+    author="VietASR Team",
+    url="https://github.com/zzasdf/VietASR",
+    casing=WordCasing.LOWER,
+    sentences_language="vi",
+    number_language="vi",
+    is_enabled=True,
+)
+MODELS[_VIETASR_MODEL.id] = _VIETASR_MODEL
+
+_PHOWHISPER_MODEL = Model(
+    id="phowhisper-base",
+    type=ModelType.WHISPER,
+    language="vi_VN",
+    language_family="vi",
+    description="Vietnamese PhoWhisper-base model",
+    version="1.0",
+    author="VinAI Research",
+    url="https://huggingface.co/vinai/PhoWhisper-base",
+    casing=WordCasing.LOWER,
+    sentences_language="vi",
+    number_language="vi",
+    is_enabled=True,
+)
+MODELS[_PHOWHISPER_MODEL.id] = _PHOWHISPER_MODEL
 
 DEFAULT_MODEL = MODELS[Language.ENGLISH]
 
@@ -410,26 +446,34 @@ async def download_model(model: Model, settings: Settings) -> None:
     If the model is already downloaded, it is deleted and downloaded again.
     """
 
+    model_dir = settings.models_dir / model.id
+
     if model.type == ModelType.WHISPER:
         _LOGGER.debug("Whisper model %s will be downloaded automatically by transformers", model.id)
         settings.models_dir.mkdir(parents=True, exist_ok=True)
         # Create a placeholder directory to indicate model is "configured"
-        model_dir = settings.models_dir / model.id
         model_dir.mkdir(parents=True, exist_ok=True)
         return
 
-    model_dir = settings.models_dir / model.id
+    if model.type == ModelType.VIETASR:
+        _LOGGER.debug(
+            "Expecting manual VietASR assets for model %s in %s", model.id, model_dir
+        )
+        model_dir.mkdir(parents=True, exist_ok=True)
+        return
+    if model.type == ModelType.CHUNKFORMER:
+        _LOGGER.debug(
+            "ChunkFormer model %s will be downloaded on demand via huggingface_hub", model.id
+        )
+        model_dir.mkdir(parents=True, exist_ok=True)
+        return
     if model_dir.exists():
         _LOGGER.debug("Deleting existing model directory: %s", model_dir)
         shutil.rmtree(model_dir)
 
     settings.models_dir.mkdir(parents=True, exist_ok=True)
 
-    if model.type == ModelType.VOSK and model.url:
-        url = model.url
-        # TODO: Handle multi-part archives for larger Vosk models if needed.
-    else:
-        url = URL_FORMAT.format(model_id=model.id)
+    url = URL_FORMAT.format(model_id=model.id)
 
     _LOGGER.debug(
         "Downloading model %s at %s to %s", model.id, url, settings.models_dir

@@ -64,13 +64,14 @@ async def lang_resources_fixture(request) -> Resources:
 
     # Train STP model
     model = MODELS[language]
+    print(
+        f"[test_transcribe] Language '{language}' using model '{model.id}' ({model.type.name})"
+    )
     wav_dir = TESTS_DIR / "wav" / language
     has_wav_fixtures = any(wav_dir.glob("*.wav")) or any(
         (wav_dir / "generated").glob("*.wav")
     )
 
-    if model.type == ModelType.VOSK and not has_wav_fixtures:
-        pytest.skip("Vosk transcription tests require language fixtures")
     model_train_dir = SETTINGS.model_train_dir(model.id)
     if model_train_dir.exists():
         shutil.rmtree(model_train_dir)

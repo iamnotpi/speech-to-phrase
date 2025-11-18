@@ -77,10 +77,12 @@ async def train(
         lexicon = LexiconDatabase()
         fst = _create_intents_fst(model, lexicon, intents)
         await train_coqui_stt(model, settings, fst)
-    elif model.type == ModelType.VOSK:
-        _LOGGER.debug("Skipping training for Vosk model %s", model.id)
     elif model.type == ModelType.WHISPER:
         _LOGGER.debug("Skipping training for Whisper model %s", model.id)
+    elif model.type == ModelType.VIETASR:
+        _LOGGER.debug("Skipping training for VietASR model %s", model.id)
+    elif model.type == ModelType.CHUNKFORMER:
+        _LOGGER.debug("Skipping training for ChunkFormer model %s", model.id)
     else:
         raise TrainingError(f"Unexpected model type for {model.id}: {model.type}")
 
@@ -273,8 +275,6 @@ async def main() -> None:
         lexicon = LexiconDatabase(settings.models_dir / model.id / "lexicon.db")
         fst = _create_intents_fst(model, lexicon, intents)
         await train_kaldi(model, settings, lexicon, fst)
-    elif model.type == ModelType.VOSK:
-        _LOGGER.debug("Skipping training for Vosk model %s", model.id)
     else:
         raise TrainingError(f"Unexpected model type for {model.id}: {model.type}")
 
