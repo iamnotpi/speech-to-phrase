@@ -5,6 +5,7 @@ import shutil
 import tarfile
 import tempfile
 import zipfile
+import os
 from collections.abc import Collection
 from dataclasses import dataclass
 from enum import Enum
@@ -396,6 +397,31 @@ _PHOWHISPER_MODEL = Model(
     is_enabled=True,
 )
 MODELS[_PHOWHISPER_MODEL.id] = _PHOWHISPER_MODEL
+
+_PHOWHISPER_TINY_MODEL = Model(
+    id="phowhisper-tiny",
+    type=ModelType.WHISPER,
+    language="vi_VN",
+    language_family="vi",
+    description="Vietnamese PhoWhisper-tiny model",
+    version="1.0",
+    author="VinAI Research",
+    url="https://huggingface.co/vinai/PhoWhisper-tiny",
+    casing=WordCasing.LOWER,
+    sentences_language="vi",
+    number_language="vi",
+    is_enabled=True,
+)
+MODELS[_PHOWHISPER_TINY_MODEL.id] = _PHOWHISPER_TINY_MODEL
+
+_VI_OVERRIDE_ID = os.environ.get("STP_VI_MODEL_ID")
+if _VI_OVERRIDE_ID:
+    _override_model = MODELS.get(_VI_OVERRIDE_ID)
+    if _override_model is None:
+        raise ValueError(
+            f"Invalid STP_VI_MODEL_ID='{_VI_OVERRIDE_ID}'. Known ids: {', '.join(sorted(MODELS.keys()))}"
+        )
+    MODELS[Language.VIETNAMESE.value] = _override_model
 
 DEFAULT_MODEL = MODELS[Language.ENGLISH]
 

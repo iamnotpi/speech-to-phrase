@@ -10,8 +10,8 @@ from typing import Any, AsyncIterable, Dict
 import numpy as np
 
 from .const import RATE, TranscribingError, WordCasing
-from .hassil_fst import decode_meta
 from .models import Model
+from .post_process import finalize_transcript
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -96,15 +96,8 @@ async def transcribe_whisper(
         return ""
 
     text = casing_func(text)
-    normalized = text
-    normalized = normalized.replace("ti vi", "tv")
-    normalized = normalized.replace("ti-vi", "tv")
-    normalized = normalized.replace("ti. vi", "tv")
-
-    if normalized.endswith("."):
-        normalized = normalized[:-1]
-
-    return decode_meta(normalized)
+    normalized = text.rstrip(".")
+    return finalize_transcript(model, normalized)
 
 
 # Import at runtime to avoid circular dependency in type checking

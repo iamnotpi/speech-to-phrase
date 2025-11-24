@@ -12,9 +12,8 @@ from typing import AsyncIterable, Dict, Iterable
 from urllib.parse import urlparse
 
 from .const import CHANNELS, RATE, WIDTH, TranscribingError, WordCasing
-from .hassil_fst import decode_meta
 from .models import Model
-from .vi_normalize import normalize_vietnamese_transcript
+from .post_process import finalize_transcript
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -71,8 +70,7 @@ async def transcribe_chunkformer(
     if not text:
         return ""
 
-    normalized = normalize_vietnamese_transcript(text)
-    return decode_meta(normalized)
+    return finalize_transcript(model, text)
 
 
 def _require_dependencies():

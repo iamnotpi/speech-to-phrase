@@ -11,9 +11,8 @@ from typing import AsyncIterable, Dict, Sequence
 import numpy as np
 
 from .const import RATE, TranscribingError, WordCasing
-from .hassil_fst import decode_meta
 from .models import Model
-from .vi_normalize import normalize_vietnamese_transcript
+from .post_process import finalize_transcript
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -86,9 +85,7 @@ async def transcribe_vietasr(
     if not text:
         return ""
 
-    normalized = normalize_vietnamese_transcript(text)
-
-    return decode_meta(normalized)
+    return finalize_transcript(model, text)
 
 
 def _require_dependencies():
