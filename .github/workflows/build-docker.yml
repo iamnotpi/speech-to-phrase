@@ -27,5 +27,5 @@ jobs:
           platforms: linux/amd64,linux/aarch64
           push: true
           tags: |
-            iampi412/speech-to-phrase-custom:latest
-            iampi412/speech-to-phrase-custom:${{ github.sha }}
+            iampi412/speech_to_phrase_custom:latest
+            iampi412/speech_to_phrase_custom:${{ github.sha }}
