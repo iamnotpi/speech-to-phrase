@@ -45,11 +45,9 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /app /app
 
 # Default command (fixed hostname: homeassistant instead of homeassistant.local)
-CMD ["python", "-m", "speech_to_phrase", \
-     "--uri", "tcp://0.0.0.0:10300", \
-     "--train-dir", "/data/train", \
-     "--tools-dir", "/data/tools", \
-     "--models-dir", "/data/models", \
-     "--hass-websocket-uri", "ws://homeassistant:8123/api/websocket", \
-     "--hass-token", "${HASS_TOKEN}", \
-     "--retrain-on-start"]
+# Copy the run script into the image
+COPY rootfs/run.sh /run.sh
+RUN chmod +x /run.sh
+
+# Use the run script so it reads hass_token via bashio
+CMD ["/run.sh"]
