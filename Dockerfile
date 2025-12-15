@@ -4,12 +4,11 @@ FROM ${BUILD_FROM}
 
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
+# Install system dependencies (Alpine base uses apk)
+RUN apk add --no-cache \
+    build-base \
     git \
-    sox \
-    && rm -rf /var/lib/apt/lists/*
+    sox
 
 # Copy project files
 COPY pyproject.toml setup.cfg ./
