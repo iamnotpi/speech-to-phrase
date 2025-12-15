@@ -1,53 +1,29 @@
-# Stage 1: Build dependencies
-FROM python:3.12-slim as builder
+# Use HA add-on base (set BUILD_FROM per arch if needed)
+ARG BUILD_FROM=ghcr.io/home-assistant/amd64-base:latest
+FROM ${BUILD_FROM}
 
-# Install build dependencies
+WORKDIR /app
+
+# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     git \
+    sox \
     && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /app
 
 # Copy project files
 COPY pyproject.toml setup.cfg ./
 COPY speech_to_phrase/ ./speech_to_phrase/
-
-# Install CPU-only PyTorch first
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
-
-# Install the package
-RUN pip install --no-cache-dir -e .
-
-# Install home-assistant-intents
-RUN pip install --no-cache-dir home-assistant-intents==2025.6.23
-
-# Copy your custom intents file (override the default)
 COPY custom_intents/data/vi.json /usr/local/lib/python3.12/site-packages/home_assistant_intents/data/vi.json
 
-# Stage 2: Runtime
-FROM python:3.12-slim
+# Install Python dependencies (CPU-only torch)
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu && \
+    pip install --no-cache-dir home-assistant-intents==2025.6.23 && \
+    pip install --no-cache-dir -e .
 
-# Only install runtime system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    sox \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get clean
-
-WORKDIR /app
-
-# Copy installed Python packages from builder
-COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
-COPY --from=builder /usr/local/bin /usr/local/bin
-
-# Copy application code
-COPY --from=builder /app /app
-
-# Default command (fixed hostname: homeassistant instead of homeassistant.local)
-# Copy the run script into the image
+# Copy run script and set as entrypoint
 COPY rootfs/run.sh /run.sh
 RUN chmod +x /run.sh
 
-# Use the run script so it reads hass_token via bashio
 CMD ["/run.sh"]
