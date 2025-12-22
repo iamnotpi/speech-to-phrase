@@ -269,17 +269,23 @@ async def get_hass_info(token: str, uri: str) -> HomeAssistantInfo:
 
             system_language: str = msg["result"]["language"]
 
-            # Get pipeline STT languages
-            await websocket.send_json(
-                {"id": next_id(), "type": "assist_pipeline/pipeline/list"}
-            )
-            msg = await websocket.receive_json()
-            assert msg["success"], msg
-
-            for pipeline in msg["result"]["pipelines"]:
-                stt_language = pipeline.get("stt_language")
-                if stt_language:
-                    pipeline_languages.add(stt_language)
+            # Get pipeline STT languages (skip gracefully if Assist Pipeline is unavailable)
+            try:
+                await websocket.send_json(
+                    {"id": next_id(), "type": "assist_pipeline/pipeline/list"}
+                )
+                msg = await websocket.receive_json()
+                if msg.get("success"):
+                    for pipeline in msg["result"]["pipelines"]:
+                        stt_language = pipeline.get("stt_language")
+                        if stt_language:
+                            pipeline_languages.add(stt_language)
+                else:
+                    _LOGGER.warning(
+                        "Assist pipeline not available: %s", msg.get("error")
+                    )
+            except Exception as exc:  # pragma: no cover - defensive
+                _LOGGER.warning("Skipping assist_pipeline list; not available: %s", exc)
 
             # Get exposed entities
             await websocket.send_json(
