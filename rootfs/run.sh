@@ -16,6 +16,4 @@ exec python -m speech_to_phrase \
   --tools-dir /data/tools \
   --models-dir /data/models \
   --hass-websocket-uri "$HASS_WS_URI" \
-  --hass-token "$HASS_TOKEN" \
-  --retrain-on-start
-
+  --hass-token "$HASS_TOKEN"
