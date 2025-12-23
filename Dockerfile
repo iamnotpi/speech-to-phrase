@@ -20,6 +20,9 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # Install the package
 RUN pip install --no-cache-dir -e .
 
+# Install chunkformer for Vietnamese model
+RUN pip install --no-cache-dir chunkformer
+
 # Install home-assistant-intents
 RUN pip install --no-cache-dir home-assistant-intents==2025.6.23
 

@@ -28,5 +28,5 @@ jobs:
           push: true
           tags: |
             iampi412/speech_to_phrase_custom:latest
-            iampi412/speech_to_phrase_custom:1.0.2
+            iampi412/speech_to_phrase_custom:1.0.3
             iampi412/speech_to_phrase_custom:${{ github.sha }}
