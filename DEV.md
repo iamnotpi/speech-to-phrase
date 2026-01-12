@@ -231,7 +231,7 @@ exec python -m speech_to_phrase \
 *   `exec` thay thế shell process bằng Python process (giúp nhận tín hiệu SIGTERM đúng cách).
 
 ### 6.2. Tùy chỉnh Intents Tiếng Việt (Custom Intents)
-Nếu bạn muốn thêm hoặc sửa đổi các intents tiếng Việt, tạo file `custom_intents/data/vi.json`:
+Nếu muốn thêm hoặc sửa đổi các intents tiếng Việt, tạo file `custom_intents/data/vi.json`:
 
 ```bash
 mkdir -p custom_intents/data
@@ -345,7 +345,7 @@ environment:
   HASS_TOKEN: "{{ hass_token }}"
 ```
 
-**Giải thích các trường quan trọng:**
+**Giải thích các trường:**
 
 *   `version`: Phiên bản add-on (phải khớp với Docker image tag).
 *   `slug`: Tên duy nhất, chỉ dùng chữ thường, số, gạch dưới (không dùng gạch ngang).
@@ -369,7 +369,7 @@ environment:
 ## Cài đặt & Cấu hình trên Home Assistant
 
 ### 9. Tải Model trước (Pre-download Models)
-Để tránh tải model mỗi lần chạy, bạn có thể tải model trước và mount vào container.
+Để tránh tải model mỗi lần chạy, có thể tải model trước và mount vào container.
 
 **Cách 1: Tải trên thiết bị Home Assistant (qua SSH)**
 
@@ -396,7 +396,7 @@ huggingface-cli download khanhld/chunkformer-rnnt-large-vie --local-dir ./models
 scp -r ./models/chunkformer-rnnt-large-vie root@your-ha-device:/root/TrungVD/model/
 ```
 
-**Lưu ý:** Đảm bảo đường dẫn trong `config.yaml` (`/root/TrungVD/model`) khớp với vị trí bạn lưu model.
+**Lưu ý:** Đảm bảo đường dẫn trong `config.yaml` (`/root/TrungVD/model`) khớp với vị trí lưu model.
 
 ### 10. Chuẩn bị Token & URI
 Để Add-on giao tiếp được với Home Assistant (để bật/tắt thiết bị), cần có thông tin xác thực.
