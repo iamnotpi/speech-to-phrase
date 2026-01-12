@@ -76,6 +76,13 @@ docker run -it -p 10300:10300 \
 
 Speech models and tools are downloaded automatically from [HuggingFace](https://huggingface.co/datasets/rhasspy/rhasspy-speech/tree/main)
 
+### VietASR (Vietnamese)
+
+- PhoWhisper remains the default Vietnamese model. To use the VietASR Zipformer model instead, select the model id `vietasr-zipformer`.
+- Download the VietASR checkpoint (TorchScript `cpu_jit.pt`) and its `tokens.txt` from the official [VietASR repository](https://github.com/zzasdf/VietASR) or [Hugging Face release](https://huggingface.co/zzasdf/viet_iter3_pseudo_label).
+- Place both files under your models directory at `models/vietasr-zipformer/`.
+- Install the additional runtime dependency with `pip install kaldifeat` so the feature extractor required by VietASR is available.
+
 
 ## How it works
 
